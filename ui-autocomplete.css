@@ -1,0 +1,13 @@
+*{
+	box-sizing: content-box !important;
+}
+.dropdown-menu>li {
+	cursor: pointer;
+}
+.dropdown-menu>li>a strong {
+	font-weight: normal;
+	color: rgb(206, 22, 85);
+}
+.dropdown-menu>li.active>a strong {
+	color: rgb(255, 173, 200);
+}
