@@ -20,7 +20,16 @@ angular.module("ui.autocomplete.tpls", []).run(["$templateCache", function($temp
    $templateCache.put("template/autocomplete/autocomplete-pinyin.html",
     "<a><span bind-html-unsafe=\"match.label | autocompleteHighlight:query\"></span>"+
     "<span style=\"float:right;padding-left:20px\" bind-html-unsafe=\"match.label | pinyin:'l' | autocompleteHighlight:query\"></span></a>");
-}]);
+}])
+
+.directive('bindHtmlUnsafe', function () {
+  return function (scope, element, attr) {
+    element.addClass('ng-binding').data('$binding', attr.bindHtmlUnsafe);
+    scope.$watch(attr.bindHtmlUnsafe, function bindHtmlUnsafeWatchAction(value) {
+      element.html(value || '');
+    });
+  };
+});
 
 angular.module("ui.autocomplete", ['ui.autocomplete.tpls'])
 
