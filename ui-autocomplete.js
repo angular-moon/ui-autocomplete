@@ -62,14 +62,15 @@ angular.module("ui.autocomplete", ['ui.autocomplete.tpls'])
         source:$parse(match[4]),
         sourceText:match[4].replace(/\s*/g,""),
         viewMapper:$parse(match[2] || match[1]),
-        modelMapper:$parse(match[1])
+        modelMapper:$parse(match[1]),
+        noLimitSource:$parse(match[4].split("|")[0])
       };
     }
   };
 }])
 
-  .directive('autocomplete', ['$compile', '$parse', '$q', '$timeout', '$window', '$document', '$position', 'autocompleteParser', '$$__nofilter',
-    function ($compile, $parse, $q, $timeout, $window, $document, $position, autocompleteParser, __nofilter) {
+  .directive('autocomplete', ['$compile', '$parse', '$q', '$timeout', '$window', '$document', '$position', 'autocompleteParser', '$filter', '$$__nofilter',
+    function ($compile, $parse, $q, $timeout, $window, $document, $position, autocompleteParser, $filter, __nofilter) {
 
   var HOT_KEYS = [9, 13, 27, 38, 40];
 
@@ -151,6 +152,20 @@ angular.module("ui.autocomplete", ['ui.autocomplete.tpls'])
         var locals = {$viewValue:inputValue};
         if(inputValue == __nofilter && parserResult.sourceText.indexOf('($viewValue)') != -1)
           locals.$viewValue = undefined;
+
+        if(attrs.autocompletePinyin){
+          //增加拼音内容,用于搜索匹配
+          var locals, label, source = parserResult.noLimitSource(originalScope);
+          if(source){
+            for(var i=source.length;i>=0;i--){
+              if(angular.isObject(source[i])){
+                locals[parserResult.itemName] = source[i];
+                label = parserResult.viewMapper(scope, locals);
+                source[i].__pinyin = $filter("pinyin")(label, 'pl');
+              }
+            }
+          }
+        }
         
         isLoadingSetter(originalScope, true);
         $q.when(parserResult.source(originalScope, locals)).then(function(matches) {
@@ -398,7 +413,7 @@ angular.module("ui.autocomplete", ['ui.autocomplete.tpls'])
     };
   })
 
-  .directive('autocompleteMatch', ['$http', '$templateCache', '$compile', '$parse', '$filter', function ($http, $templateCache, $compile, $parse, $filter) {
+  .directive('autocompleteMatch', ['$http', '$templateCache', '$compile', '$parse', function ($http, $templateCache, $compile, $parse) {
     return {
       restrict:'EA',
       scope:{
@@ -408,9 +423,6 @@ angular.module("ui.autocomplete", ['ui.autocomplete.tpls'])
       },
       link:function (scope, element, attrs) {
         var tplUrl = $parse(attrs.templateUrl)(scope.$parent) || 'template/autocomplete/autocomplete-match.html';
-        //增加拼音内容,用于搜索匹配
-        if(tplUrl === 'template/autocomplete/autocomplete-pinyin.html')
-        	scope.match.model.__pinyin = $filter("pinyin")(scope.match.label, 'pl');
         
         $http.get(tplUrl, {cache: $templateCache}).success(function(tplContent){
            element.replaceWith($compile(tplContent.trim())(scope));
