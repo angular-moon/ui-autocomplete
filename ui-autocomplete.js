@@ -17,9 +17,10 @@ angular.module("ui.autocomplete.tpls", []).run(["$templateCache", function($temp
     "        <a tabindex=\"-1\" ng-bind-html-unsafe=\"match.label | autocompleteHighlight:query\"></a>\n" +
     "    </li>\n" +
     "</ul>");
+
    $templateCache.put("template/autocomplete/autocomplete-pinyin.html",
-    "<a><span bind-html-unsafe=\"match.label | autocompleteHighlight:query\"></span>"+
-    "<span style=\"float:right;padding-left:20px\" bind-html-unsafe=\"match.label | pinyin:'l' | autocompleteHighlight:query\"></span></a>");
+    "<a class=\"clearfix\" style=\"*zoom:0\"><span style=\"float:left;*float:none;\" bind-html-unsafe=\"match.label | autocompleteHighlight:query\"></span>"+
+    "<span style=\"float:right;*float:none;padding-left:20px\" bind-html-unsafe=\"match.label | pinyin:'l' | autocompleteHighlight:query\"></span></a>");
 }])
 
 .directive('bindHtmlUnsafe', function () {
@@ -441,7 +442,7 @@ angular.module("ui.autocomplete", ['ui.autocomplete.tpls'])
       if(angular.equals(query, __nofilter))
         return matchItem;
       else
-        return query ? matchItem.replace(new RegExp(escapeRegexp(query), 'gi'), '<strong>$&</strong>') : matchItem;
+        return query ? matchItem.replace(new RegExp(escapeRegexp(query), 'gi'), '<strong style="*color:#FFADC8">$&</strong>') : matchItem;
     };
   }])
 
