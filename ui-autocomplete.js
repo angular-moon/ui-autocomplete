@@ -20,7 +20,7 @@ angular.module("ui.autocomplete.tpls", []).run(["$templateCache", function($temp
 
    $templateCache.put("template/autocomplete/autocomplete-pinyin.html",
     "<a class=\"clearfix\" style=\"*zoom:0\"><span style=\"float:left;*float:none;\" bind-html-unsafe=\"match.label | autocompleteHighlight:query\"></span>"+
-    "<span style=\"float:right;*float:none;padding-left:20px\" bind-html-unsafe=\"match.label | pinyin:'l' | autocompleteHighlight:query\"></span></a>");
+    "<span style=\"float:right;*float:none;padding-left:20px\" bind-html-unsafe=\"match.label | pinyin:'f' | autocompleteHighlight:query\"></span></a>");
 }])
 
 .directive('bindHtmlUnsafe', function () {
@@ -162,7 +162,7 @@ angular.module("ui.autocomplete", ['ui.autocomplete.tpls'])
               if(angular.isObject(source[i])){
                 locals[parserResult.itemName] = source[i];
                 label = parserResult.viewMapper(scope, locals);
-                source[i].__pinyin = $filter("pinyin")(label, 'pl');
+                source[i].__pinyin = $filter("pinyin")(label, 'a');
               }
             }
           }
@@ -599,17 +599,14 @@ angular.module("ui.autocomplete", ['ui.autocomplete.tpls'])
 
   .filter('pinyin',function() {
     return function(input, format) {
-    	if(__pinyin && input){
-    		var py = __pinyin.get(input);
+    	if(input){
     		switch(format){
-    			case "p":
-    				return py.p;
-    			case "l":
-    				return py.l;
-    			case "pl":
-    				return py.p + " " + py.l;
-    			case "lp":
-    				return py.l + " " + py.p;
+          //first_letter 首字母
+    			case "f":
+    				return pinyin(input, {style: pinyin.STYLE_FIRST_LETTER});
+          //all_for_search
+    			case "a":
+    				return pinyin.buildSearchString(input);
     		}
     	}else{
     		return "";
