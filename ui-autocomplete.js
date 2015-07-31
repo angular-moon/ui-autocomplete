@@ -22,7 +22,7 @@ angular.module("ui.autocomplete.tpls", []).run(["$templateCache", function($temp
 
    $templateCache.put("template/autocomplete/autocomplete-pinyin.html",
     "<a class=\"clearfix\" style=\"*zoom:0\"><span style=\"float:left;*float:none;\" bind-html-unsafe=\"match.label | autocompleteHighlight:query\"></span>"+
-    "<span style=\"float:right;*float:none;padding-left:20px\" bind-html-unsafe=\"match.label | pinyin:'f' | autocompleteHighlight:query\"></span></a>");
+    "<span style=\"float:right;*float:none;padding-left:20px\" bind-html-unsafe=\"match.model.__py_label | autocompleteHighlight:query\"></span></a>");
 }])
 
 .directive('bindHtmlUnsafe', function () {
@@ -124,8 +124,8 @@ angular.module("ui.autocomplete", ['ui.autocomplete.tpls'])
         position: 'position'
       });
 
- 	   if(attrs.autocompletePinyin){
-      		attrs.autocompleteTemplateUrl = "template/autocomplete/autocomplete-pinyin.html"
+     if(attrs.autocompletePinyin){
+          attrs.autocompleteTemplateUrl = "template/autocomplete/autocomplete-pinyin.html"
       }
 
       //custom item template
@@ -149,7 +149,7 @@ angular.module("ui.autocomplete", ['ui.autocomplete.tpls'])
         scope.matches = [];
         scope.activeIdx = -1;
       };
-
+    
       var getMatchesAsync = function(inputValue) {
 
         var locals = {$viewValue:inputValue};
@@ -161,10 +161,12 @@ angular.module("ui.autocomplete", ['ui.autocomplete.tpls'])
           var locals, label, source = parserResult.noLimitSource(originalScope);
           if(source){
             for(var i=source.length;i>=0;i--){
-              if(angular.isObject(source[i])){
+              if(angular.isObject(source[i]) && !source[i].__py_search){
                 locals[parserResult.itemName] = source[i];
                 label = parserResult.viewMapper(scope, locals);
-                source[i].__pinyin = $filter("pinyin")(label, 'a');
+                source[i].__py_search = $filter("pinyin")(label, 'a');
+                var tempArray = source[i].__py_search.split(" ");
+                source[i].__py_label = tempArray[tempArray.length-1];
               }
             }
           }
@@ -344,9 +346,9 @@ angular.module("ui.autocomplete", ['ui.autocomplete.tpls'])
           });
 
         } else if (evt.which === 27) {
-	        evt.stopPropagation();
-	        resetMatches();
-	        scope.$digest();
+          evt.stopPropagation();
+          resetMatches();
+          scope.$digest();
         }
       });
 
@@ -601,18 +603,18 @@ angular.module("ui.autocomplete", ['ui.autocomplete.tpls'])
 
   .filter('pinyin',function() {
     return function(input, format) {
-    	if(input){
-    		switch(format){
+      if(input){
+        switch(format){
           //first_letter 首字母
-    			case "f":
-    				return pinyin(input, {style: pinyin.STYLE_FIRST_LETTER});
+          case "f":
+            return pinyin(input, {style: pinyin.STYLE_FIRST_LETTER}).join("");
           //all_for_search
-    			case "a":
-    				return pinyin.buildSearchString(input);
-    		}
-    	}else{
-    		return "";
-    	}
+          case "a":
+            return pinyin.buildSearchString(input);
+        }
+      }else{
+        return "";
+      }
     };
   });
 
