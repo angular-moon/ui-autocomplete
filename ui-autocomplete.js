@@ -1,5 +1,7 @@
 //@require bootstrap/css/bootstrap.css
 //@require ui-autocomplete.css
+var pinyin = require("pinyin");
+
 angular.module("ui.autocomplete.tpls", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("template/autocomplete/autocomplete-match.html",
     "<a tabindex=\"-1\" bind-html-unsafe=\"match.label | autocompleteHighlight:query\"></a>");

@@ -10,8 +10,7 @@
     ],
     "shim": {
         "ui-autocomplete.js": {
-            "deps": ["angular","pinyin"],
-            "vars": ["angular","pinyin"],
+            "deps": ["angular"],
             "exports": "'ui.autocomplete'"
         }
     }
