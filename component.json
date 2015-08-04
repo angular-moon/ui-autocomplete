@@ -11,7 +11,7 @@
     ],
     "shim": {
         "ui-autocomplete.js": {
-            "deps": ["angular"],
+            "deps": ["angular", "css!ui-autocomplete.css"],
             "exports": "'ui.autocomplete'"
         }
     }

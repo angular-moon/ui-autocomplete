@@ -1,6 +1,3 @@
-//@require bootstrap/css/bootstrap.css
-
-require("css!ui-autocomplete.css");
 
 var pinyin = require("pinyin");
 
