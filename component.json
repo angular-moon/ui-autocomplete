@@ -6,7 +6,8 @@
     "dependencies": [
         "angular",
         "bootstrap",
-        "pinyin"
+        "pinyin",
+        "css"
     ],
     "shim": {
         "ui-autocomplete.js": {

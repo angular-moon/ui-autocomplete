@@ -1,5 +1,7 @@
 //@require bootstrap/css/bootstrap.css
-//@require ui-autocomplete.css
+
+require("css!ui-autocomplete.css");
+
 var pinyin = require("pinyin");
 
 angular.module("ui.autocomplete.tpls", []).run(["$templateCache", function($templateCache) {
