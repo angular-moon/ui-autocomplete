@@ -1,5 +1,5 @@
 {
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "自动完成输入框指令",
     "name": "ui-autocomplete",
     "main": "ui-autocomplete.js",
