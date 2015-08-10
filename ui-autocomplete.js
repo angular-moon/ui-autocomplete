@@ -243,21 +243,18 @@ angular.module("ui.autocomplete", ['ui.autocomplete.tpls'])
           resetMatches();
         }
 
-        if(clickLoad && inputValue == __nofilter)
-          return undefined;
-
         if (isEditable) {
-          return inputValue;
+          return clickLoad && inputValue == __nofilter ? undefined : inputValue;
         } else {
-          if (!inputValue) {
+          if (!inputValue || (clickLoad && inputValue == __nofilter)) {
             // Reset in case user had typed something previously.
             modelCtrl.$setValidity('editable', true);
-            return inputValue;
           } else {
             modelCtrl.$setValidity('editable', false);
-            return undefined;
           }
+          return undefined;
         }
+        
       }
 
       modelCtrl.$parsers.unshift(action);
