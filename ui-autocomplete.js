@@ -362,9 +362,13 @@ angular.module("ui.autocomplete", ['ui.autocomplete.tpls'])
       };
 
       $document.bind('click', dismissClickHandler);
+      if(top != self)
+        $(top.document).bind('click', dismissClickHandler);
 
       originalScope.$on('$destroy', function(){
         $document.unbind('click', dismissClickHandler);
+        if(top != self)
+          $(top.document).unbind('click', dismissClickHandler);
       });
 
       var $popup = $compile(popUpEl)(scope);
@@ -442,7 +446,7 @@ angular.module("ui.autocomplete", ['ui.autocomplete.tpls'])
       if(angular.equals(query, __nofilter))
         return matchItem;
       else
-        return query ? matchItem.replace(new RegExp(escapeRegexp(query), 'gi'), '<strong style="*color:#FFADC8">$&</strong>') : matchItem;
+        return query ? matchItem.replace(new RegExp(escapeRegexp(query), 'gi'), '<strong style="color:#FFADC8">$&</strong>') : matchItem;
     };
   }])
 
