@@ -79,8 +79,6 @@ angular.module("ui.autocomplete", ['ui.autocomplete.tpls'])
   return {
     require:'ngModel',
     link:function (originalScope, element, attrs, modelCtrl) {
-      //修复ie下 tab错误触发的bug.
-      modelCtrl.$setViewValue("");
 
       //SUPPORTED ATTRIBUTES (OPTIONS)
 
