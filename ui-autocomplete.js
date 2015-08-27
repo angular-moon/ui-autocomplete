@@ -101,7 +101,7 @@ angular.module("ui.autocomplete", ['ui.autocomplete.tpls'])
 
       var appendToBody = attrs.autocompleteAppendToBody ? $parse(attrs.autocompleteAppendToBody) : false;
 
-      var clickLoad = originalScope.$eval(attrs.autocompleteClickLoad) !== false;
+      var focusLoad = originalScope.$eval(attrs.autocompleteFocusLoad) !== false;
 
       //INTERNAL VARIABLES
 
@@ -222,7 +222,7 @@ angular.module("ui.autocomplete", ['ui.autocomplete.tpls'])
 
       function action(inputValue) {
 
-        if(clickLoad && !inputValue)
+        if(focusLoad && !inputValue)
           inputValue = __nofilter;
 
         hasFocus = true;
@@ -244,9 +244,9 @@ angular.module("ui.autocomplete", ['ui.autocomplete.tpls'])
         }
 
         if (isEditable) {
-          return clickLoad && inputValue == __nofilter ? undefined : inputValue;
+          return focusLoad && inputValue == __nofilter ? undefined : inputValue;
         } else {
-          if (!inputValue || (clickLoad && inputValue == __nofilter)) {
+          if (!inputValue || (focusLoad && inputValue == __nofilter)) {
             // Reset in case user had typed something previously.
             modelCtrl.$setValidity('editable', true);
           } else {
@@ -305,9 +305,9 @@ angular.module("ui.autocomplete", ['ui.autocomplete.tpls'])
         element[0].focus();
       };
 
-      //点击加载下拉选择列表
-      if(clickLoad){
-         element.bind('click', function (evt){
+      //获取焦点加载下拉选择列表
+      if(focusLoad){
+         element.bind('focus', function (evt){
             scope.$apply(function(){
               hasFocus = true;
               if(element[0].value)
