@@ -302,12 +302,18 @@ angular.module("ui.autocomplete", ['ui.autocomplete.tpls'])
         resetMatches();
       
         //return focus to the input element if a mach was selected via a mouse click event
+        hasFocus = "innerTrigger";
         element[0].focus();
       };
 
       //获取焦点加载下拉选择列表
       if(focusLoad){
          element.bind('focus', function (evt){
+           if(hasFocus == "innerTrigger"){
+                hasFocus = true;
+                return;
+            }
+            
             scope.$apply(function(){
               hasFocus = true;
               if(element[0].value)
