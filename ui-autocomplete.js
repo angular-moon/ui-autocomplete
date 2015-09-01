@@ -314,7 +314,7 @@ angular.module("ui.autocomplete", ['ui.autocomplete.tpls'])
                 return;
             }
             
-            scope.$apply(function(){
+            $timeout(function() {
               hasFocus = true;
               if(element[0].value)
                  getMatchesAsync(element[0].value);
