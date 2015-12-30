@@ -173,11 +173,12 @@ angular.module("ui.autocomplete", ['ui.autocomplete.tpls'])
         
         isLoadingSetter(originalScope, true);
         $q.when(parserResult.source(originalScope, locals)).then(function(matches) {
-
+          if(!matches)
+            return;
           //it might happen that several async queries were in progress if a user were typing fast
           //but we are interested only in responses that correspond to the current view value
-          if ((angular.equals(inputValue, __nofilter) || inputValue === modelCtrl.$viewValue) && hasFocus) {
-            if (matches.length > 0) {
+          if((angular.equals(inputValue, __nofilter) || inputValue === modelCtrl.$viewValue) && hasFocus) {
+            if(matches.length > 0) {
 
               scope.activeIdx = 0;
               scope.matches.length = 0;
