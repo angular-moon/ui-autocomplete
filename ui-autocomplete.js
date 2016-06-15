@@ -453,7 +453,7 @@ angular.module("ui.autocomplete", ['ui.autocomplete.tpls'])
       if(angular.equals(query, __nofilter))
         return matchItem;
       else
-        return query ? matchItem.replace(new RegExp(escapeRegexp(query), 'gi'), '<strong style="color:#FFADC8">$&</strong>') : matchItem;
+        return query && matchItem ? matchItem.replace(new RegExp(escapeRegexp(query), 'gi'), '<strong style="color:#FFADC8">$&</strong>') : matchItem;
     };
   }])
 
