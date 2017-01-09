@@ -1,17 +1,16 @@
 {
-    "version": "1.0.6",
+    "version": "1.0.7",
     "description": "自动完成输入框指令",
     "name": "ui-autocomplete",
     "main": "ui-autocomplete.js",
     "dependencies": [
         "angular",
         "bootstrap",
-        "pinyin",
-        "css"
+        "pinyin"
     ],
     "shim": {
         "ui-autocomplete.js": {
-            "deps": ["angular", "css!ui-autocomplete.css"],
+            "deps": ["angular", "ui-autocomplete.css"],
             "exports": "'ui.autocomplete'"
         }
     }
